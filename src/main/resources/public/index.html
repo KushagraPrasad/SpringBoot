@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Page with REST API</title>
+</head>
+<body>
+    <h1>Simple HTML Page with REST API</h1>
+    <button onclick="getData()">Get Data from API</button>
+    <p id="data"></p>
+
+    <script>
+        function getData() {
+            fetch('http://localhost:8090/api/image') // Replace with your API endpoint URL
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('data').innerHTML = JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
