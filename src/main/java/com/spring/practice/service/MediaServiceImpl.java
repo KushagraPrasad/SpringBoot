@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.practice.entity.Media;
+import com.spring.practice.exception.MediaServiceException;
 import com.spring.practice.pojo.MediaDetail;
 import com.spring.practice.repository.MediaRepository;
 
@@ -34,7 +35,7 @@ public class MediaServiceImpl implements MediaService {
 
 	public Media upload(MediaDetail media) throws Exception {
 		if (media.getFileSize() == 0) {
-			throw new RuntimeException("file size is not acceptable");
+			throw new MediaServiceException("file size is not acceptable");
 		}
 		logger.info("inside upload method");
 		Media mediaa = new Media(media.getFileName(), media.getFileSize());
@@ -48,7 +49,7 @@ public class MediaServiceImpl implements MediaService {
 
 	public Optional<Media> read(long id) throws Exception {
 		if (id == 0) {
-			throw new RuntimeException("id is invalid");
+			throw new MediaServiceException("id is invalid");
 		}
 		return mediaRepository.findById(id);
 	}
