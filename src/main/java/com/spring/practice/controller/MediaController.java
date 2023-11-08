@@ -15,53 +15,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.practice.entity.Media;
 import com.spring.practice.pojo.MediaDetail;
-import com.spring.practice.service.ImageDeleteService;
-import com.spring.practice.service.ImageUploadService;
-import com.spring.practice.service.MediaReplace;
-import com.spring.practice.service.ReadImage;
+import com.spring.practice.service.MediaService;
 
 @RestController
 @RequestMapping("/api")
 public class MediaController {
 
 	@Autowired
-	ImageUploadService imageupload;
-	@Autowired
-	ImageDeleteService deleteimage;
-	@Autowired
-	ReadImage readimage;
-	@Autowired
-	MediaReplace mediareplace;
-	
+	MediaService mediaService;
+
 	private static final Logger logger = Logger.getLogger(MediaController.class.getName());
 
 	@PostMapping(value = "/image")
-	public Media uploadMedia(@RequestBody MediaDetail image) {
+	public Media uploadMedia(@RequestBody MediaDetail image) throws Exception {
 		logger.info("Upload image called with image : " + image);
-		return imageupload.upload(image);
+		return mediaService.upload(image);
 	}
 
 	@RequestMapping(value = "/image/{id}", method = RequestMethod.DELETE)
-	public void deleteMedia(@PathVariable long id) {
+	public void deleteMedia(@PathVariable long id) throws Exception {
 		logger.info("Delete image called with image:" + id);
-		deleteimage.delete(id);
+		mediaService.delete(id);
 	}
 
 	@RequestMapping(value = "/image/{id}", method = RequestMethod.GET)
-	public Optional<Media> readMedia(@PathVariable long id) {
+	public Optional<Media> readMedia(@PathVariable long id) throws Exception {
 		logger.info("Read image called with image:" + id);
-		return readimage.read(id);
+		return mediaService.read(id);
 	}
 
 	@RequestMapping(value = "/image", method = RequestMethod.GET)
-	public List<Media> readAll() {
+	public List<Media> readAll() throws Exception {
 		logger.info("Read all image");
-		return readimage.readAll();
+		return mediaService.readAll();
 	}
-	
+
 	@PutMapping("/image/{id}")
-    public Media replaceMedia(@RequestBody MediaDetail image, @PathVariable Long id) {
+	public Media replaceMedia(@RequestBody MediaDetail image, @PathVariable Long id) throws Exception {
 		logger.info("Media Replaced.");
-		return mediareplace.replace(image,id);
-}
+		return mediaService.update(image, id);
+	}
 }
